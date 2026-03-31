@@ -1,8 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
 
 const Contact = () => {
+  const [status, setStatus] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('Sending...');
+    
+    const formData = new FormData(e.target);
+    // Get your free access key from https://web3forms.com/ and paste it below
+    formData.append("access_key", "1b818532-2d34-47ef-9c4d-918f30d16d91");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        setStatus('Message Sent!');
+        e.target.reset();
+        setTimeout(() => setStatus(''), 3000);
+      } else {
+        setStatus('Error: ' + data.message);
+      }
+    } catch (error) {
+      setStatus('Error sending message');
+    }
+  };
+
   return (
     <section id="contact" className="min-h-screen py-24 flex items-center relative z-10">
       <div className="container mx-auto px-6 max-w-7xl">
@@ -63,11 +92,12 @@ const Contact = () => {
           
           {/* Contact Form */}
           <div className="bg-slate-900/50 backdrop-blur-2xl border border-white/10 p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-[0_0_40px_rgba(34,211,238,0.1)] transition-shadow duration-500">
-            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-slate-300 font-medium ml-1">Name</label>
                 <input 
                   type="text" 
+                  name="name"
                   placeholder="Your Name" 
                   required 
                   className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-5 py-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-light" 
@@ -77,6 +107,7 @@ const Contact = () => {
                 <label className="text-slate-300 font-medium ml-1">Email</label>
                 <input 
                   type="email" 
+                  name="email"
                   placeholder="Your Email" 
                   required 
                   className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-5 py-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400 transition-all font-light" 
@@ -86,6 +117,7 @@ const Contact = () => {
                 <label className="text-slate-300 font-medium ml-1">Message</label>
                 <textarea 
                   rows="5" 
+                  name="message"
                   placeholder="Your Message" 
                   required 
                   className="w-full bg-slate-950/50 border border-white/10 rounded-xl px-5 py-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all font-light resize-none"
@@ -93,9 +125,10 @@ const Contact = () => {
               </div>
               <button 
                 type="submit" 
-                className="w-full mt-2 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(34,211,238,0.39)] hover:shadow-[0_6px_20px_rgba(34,211,238,0.23)] hover:-translate-y-1 transition-all duration-300"
+                disabled={status === 'Sending...'}
+                className="w-full mt-2 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(34,211,238,0.39)] hover:shadow-[0_6px_20px_rgba(34,211,238,0.23)] hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:-translate-y-0"
               >
-                Send Message
+                {status || 'Send Message'}
               </button>
             </form>
           </div>
