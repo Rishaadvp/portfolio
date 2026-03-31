@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, Download } from 'lucide-react';
-import avatarImg from '../assets/avatar.png'; // Generated avatar
+import profileImg from '../assets/profile.jpg';
 
 const Hero = () => {
   return (
@@ -46,8 +46,8 @@ const Hero = () => {
               <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 opacity-40 group-hover:opacity-75 blur-3xl transition-opacity duration-700 animate-pulse"></div>
               <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border border-white/10 shadow-2xl backdrop-blur-xl bg-slate-900/40">
                 <img 
-                  src={avatarImg} 
-                  alt="Abstract AI Avatar" 
+                  src={profileImg} 
+                  alt="Muhammed Rishad VP" 
                   className="w-full h-full object-cover scale-105 group-hover:scale-100 transition-transform duration-700 opacity-90 group-hover:opacity-100" 
                 />
               </div>
