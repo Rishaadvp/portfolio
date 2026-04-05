@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://my-info-rishaadvp.vercel.app/sitemap.xml
